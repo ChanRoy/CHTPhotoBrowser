@@ -10,5 +10,14 @@
 
 @interface CHTPhotoBrowser : UIView
 
+@property (nonatomic, assign, getter=isShowPageControl) BOOL showPageControl;
+
+@property (nonatomic, strong) NSArray *imageUrls;
+
+@property (nonatomic, strong) NSArray *images;
+
+@property (nonatomic, strong) UIImage *placeholderImage;
+
+- (instancetype)initWithFrame:(CGRect)frame imageUrls:(NSArray *)imageUrls placeholderImage:(UIImage *)placeholderImage;
 
 @end
