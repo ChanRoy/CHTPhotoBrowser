@@ -18,10 +18,7 @@
 
 @end
 
-@implementation CHTPhotoView{
-    
-    BOOL _isDoubleTaping;
-}
+@implementation CHTPhotoView
 
 - (void)dealloc{
     
@@ -74,6 +71,8 @@
     _doubleTap.numberOfTapsRequired = 2;
     [self addGestureRecognizer:_doubleTap];
     
+    //onceTap is not enable when _doubleTap is responsed
+    [onceTap requireGestureRecognizerToFail:_doubleTap];
 }
 
 - (void)setupLoadingView{
@@ -165,25 +164,15 @@
 #pragma mark - Gesture
 - (void)handleOnceTap:(UITapGestureRecognizer *)onceTap{
     
-    _isDoubleTaping = NO;
-    [self performSelector:@selector(onceTapEvent) withObject:nil afterDelay:0.2f];
-}
-
-- (void)onceTapEvent{
-    
-    if (_isDoubleTaping) {
-        return;
-    }
-    
     if (_photoViewDelegate && [_photoViewDelegate respondsToSelector:@selector(photoViewDidOnceTap:)]) {
         
         [_photoViewDelegate photoViewDidOnceTap:self];
     }
+
 }
 
 - (void)handleDoubleTap:(UITapGestureRecognizer *)doubleTap{
     
-    _isDoubleTaping = YES;
     CGPoint tapPoint = [doubleTap locationInView:_imageView];
     if (self.zoomScale == self.maximumZoomScale) {
     

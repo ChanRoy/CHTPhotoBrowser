@@ -11,6 +11,7 @@
 
 @protocol CHTPhotoViewDelegate <NSObject>
 
+@optional
 - (void)photoViewDidOnceTap:(CHTPhotoView *)photoView;
 
 @end
