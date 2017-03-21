@@ -103,8 +103,19 @@ typedef enum : NSUInteger {
     _pageControl.hidden = !showPageControl;
 }
 
+- (void)setCurrentIndex:(NSInteger)currentIndex{
+    
+    _currentIndex = currentIndex;
+    [self setupScrollView];
+}
+
 #pragma mark - UI
 - (void)setupScrollView{
+    
+    if (_scrollView) {
+        
+        [_scrollView removeFromSuperview];
+    }
     
     _scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, _viewWidth, _viewHeight)];
     _scrollView.showsVerticalScrollIndicator = NO;
@@ -128,9 +139,9 @@ typedef enum : NSUInteger {
         photoView.photoViewDelegate = self;
         
         NSInteger index = 0;
-        if (i == 0) index = _imageCount - 1;
-        if (i == 1) index = 0;
-        if (i == 2) index = _imageCount == 1 ? 0 : 1;
+        if (i == 0) index = _currentIndex==0? _imageCount-1: _currentIndex-1;
+        if (i == 1) index = _currentIndex;
+        if (i == 2) index = _imageCount == 1 ? 0 : _currentIndex+1;
         
         photoView.tag = index + START_TAG;
 
@@ -145,7 +156,7 @@ typedef enum : NSUInteger {
     
     _pageControl = [[UIPageControl alloc]initWithFrame:CGRectMake(0, _viewHeight - 30, _viewWidth, 30)];
     _pageControl.numberOfPages = _imageCount;
-    _pageControl.currentPage = 0;
+    _pageControl.currentPage = _currentIndex;
     _pageControl.hidesForSinglePage = YES;
     [self addSubview:_pageControl];
 
@@ -204,6 +215,7 @@ typedef enum : NSUInteger {
     }
     
     _pageControl.currentPage = _photoViewArr[1].tag - START_TAG;
+    _currentIndex = _photoViewArr[1].tag - START_TAG;
     
     if (_delegate && [_delegate respondsToSelector:@selector(photoBrowser:didScrollToIndex:)]) {
         

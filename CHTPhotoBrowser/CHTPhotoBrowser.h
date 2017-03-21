@@ -22,6 +22,8 @@
 
 @property (nonatomic, assign, getter=isShowPageControl) BOOL showPageControl;
 
+@property (nonatomic, assign) NSInteger currentIndex;
+
 @property (nonatomic, weak) id <CHTPhotoBrowserDelegate> delegate;
 
 - (instancetype)init NS_UNAVAILABLE;
