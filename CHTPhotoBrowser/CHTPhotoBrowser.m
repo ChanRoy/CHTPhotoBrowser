@@ -23,13 +23,15 @@ typedef enum : NSUInteger {
 
 @property (nonatomic, strong) UIScrollView *scrollView;
 
+@property (nonatomic, strong) UIView *contentView;
+
+@property (nonatomic, strong) UIPageControl *pageControl;
+
 @property (nonatomic, strong) NSArray *imageUrls;
 
 @property (nonatomic, strong) NSArray *images;
 
 @property (nonatomic, strong) UIImage *placeholderImage;
-
-@property (nonatomic, strong) UIView *contentView;
 
 @property (nonatomic, strong) NSMutableArray <CHTPhotoView *>*photoViewArr;
 
@@ -89,6 +91,19 @@ typedef enum : NSUInteger {
     _viewHeight = CGRectGetHeight(self.frame);
 }
 
+#pragma mark - getter
+- (BOOL)isShowPageControl{
+    
+    return !_pageControl.hidden;
+}
+
+#pragma mark - setter
+- (void)setShowPageControl:(BOOL)showPageControl{
+    
+    _pageControl.hidden = !showPageControl;
+}
+
+#pragma mark - UI
 - (void)setupScrollView{
     
     _scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, _viewWidth, _viewHeight)];
@@ -127,6 +142,14 @@ typedef enum : NSUInteger {
     }
     
     _scrollView.contentOffset = CGPointMake(_viewWidth, 0);
+    
+    _pageControl = [[UIPageControl alloc]initWithFrame:CGRectMake(0, _viewHeight - 30, _viewWidth, 30)];
+    _pageControl.numberOfPages = _imageCount;
+    _pageControl.currentPage = 0;
+    _pageControl.hidesForSinglePage = YES;
+    [self addSubview:_pageControl];
+
+    
     if (_imageCount == 1) {
         _scrollView.scrollEnabled = NO;
     }
@@ -179,6 +202,8 @@ typedef enum : NSUInteger {
         _scrollView.contentOffset = CGPointMake(_viewWidth, 0);
         
     }
+    
+    _pageControl.currentPage = _photoViewArr[1].tag - START_TAG;
     
     if (_delegate && [_delegate respondsToSelector:@selector(photoBrowser:didScrollToIndex:)]) {
         
