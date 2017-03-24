@@ -45,6 +45,7 @@ typedef enum : NSUInteger {
     
     CGFloat _viewWidth;
     CGFloat _viewHeight;
+    BOOL _showPageControl;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame imageUrls:(NSArray <NSString *>*)imageUrls placeholderImage:(UIImage *)placeholderImage{
@@ -94,13 +95,14 @@ typedef enum : NSUInteger {
 #pragma mark - getter
 - (BOOL)isShowPageControl{
     
-    return !_pageControl.hidden;
+    return _showPageControl;
 }
 
 #pragma mark - setter
 - (void)setShowPageControl:(BOOL)showPageControl{
     
-    _pageControl.hidden = !showPageControl;
+    _showPageControl = showPageControl;
+    _pageControl.hidden = !_showPageControl;
 }
 
 - (void)setCurrentIndex:(NSInteger)currentIndex{
@@ -161,6 +163,7 @@ typedef enum : NSUInteger {
     _pageControl.currentPage = _currentIndex;
     _pageControl.hidesForSinglePage = YES;
     [self addSubview:_pageControl];
+    _pageControl.hidden = !_showPageControl;
 
     
     if (_imageCount == 1) {
