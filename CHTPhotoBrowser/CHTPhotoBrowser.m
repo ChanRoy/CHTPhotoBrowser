@@ -126,11 +126,13 @@ typedef enum : NSUInteger {
     [self addSubview:_scrollView];
     
     _contentView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, _viewWidth*3, _viewHeight)];
-    _contentView.backgroundColor = [UIColor whiteColor];
+    _contentView.backgroundColor = [UIColor blackColor];
     _contentView.userInteractionEnabled = YES;
     [_scrollView addSubview:_contentView];
     
     _photoViewArr = [NSMutableArray new];
+    
+    if (_imageCount == 0) return;
     
     //setup three photoViews in the _scrollView
     for (NSInteger i = 0; i < 3; i ++) {
@@ -141,7 +143,7 @@ typedef enum : NSUInteger {
         NSInteger index = 0;
         if (i == 0) index = _currentIndex==0? _imageCount-1: _currentIndex-1;
         if (i == 1) index = _currentIndex;
-        if (i == 2) index = _imageCount == 1 ? 0 : _currentIndex+1;
+        if (i == 2) index = _currentIndex+1 == _imageCount? 0: _currentIndex+1;
         
         photoView.tag = index + START_TAG;
 
@@ -179,6 +181,10 @@ typedef enum : NSUInteger {
 }
 
 - (void)updateUI{
+    
+    if (_imageCount == 0) {
+        return;
+    }
     
     int flag = 0;
     //slide to right

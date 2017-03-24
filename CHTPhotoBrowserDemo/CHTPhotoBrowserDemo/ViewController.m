@@ -40,7 +40,7 @@
     
     CHTPhotoBrowser *photoBrowser = [[CHTPhotoBrowser alloc]initWithFrame:CGRectMake(0, 0, SCREENWIDTH, SCREENHEIGHT) images:photos];
     photoBrowser.delegate = self;
-    photoBrowser.currentIndex = 2;
+    photoBrowser.currentIndex = 1;
     
     [self.view addSubview:photoBrowser];
     
