@@ -24,6 +24,8 @@
 
 @property (nonatomic, assign) NSInteger currentIndex;
 
+@property (nonatomic, assign) BOOL isInfinite;
+
 @property (nonatomic, weak) id <CHTPhotoBrowserDelegate> delegate;
 
 - (instancetype)init NS_UNAVAILABLE;

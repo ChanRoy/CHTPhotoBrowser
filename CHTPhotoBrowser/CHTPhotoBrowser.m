@@ -219,8 +219,7 @@ typedef enum : NSUInteger {
         [self setImageForPhotoView:photoView atIndex:index];
         
         //the imageView in the middel should be always in the middle
-        _scrollView.contentOffset = CGPointMake(_viewWidth, 0);
-        
+        _scrollView.contentOffset = CGPointMake(_viewWidth, 0);;
     }
     
     _pageControl.currentPage = _photoViewArr[1].tag - START_TAG;
