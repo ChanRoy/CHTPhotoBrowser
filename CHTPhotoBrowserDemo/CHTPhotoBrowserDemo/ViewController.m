@@ -51,6 +51,7 @@
     
     CHTPhotoBrowser *photoBrowser = [[CHTPhotoBrowser alloc]initWithFrame:CGRectMake(0, 0, SCREENWIDTH, SCREENHEIGHT) images:photos];
     photoBrowser.delegate = self;
+    photoBrowser.showPageControl = YES;
     [self.view addSubview:photoBrowser];
 
 #endif
