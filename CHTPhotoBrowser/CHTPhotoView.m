@@ -78,7 +78,7 @@
 - (void)setupLoadingView{
     
     _loadingView = [[CHTRingLoadingView alloc]initWithFrame:CGRectMake(0, 0, 40, 40)];
-    _loadingView.center = CGPointMake(CGRectGetWidth(self.frame)/2, CGRectGetHeight(self.frame)/2);
+    _loadingView.center = CGPointMake(CGRectGetWidth(self.bounds)/2, CGRectGetHeight(self.bounds)/2);
     [self addSubview:_loadingView];
     [self bringSubviewToFront:_loadingView];
 }
@@ -110,14 +110,20 @@
     CGRect imageFrame = CGRectMake(0, 0, boundsWidth, imageHeight * boundsWidth / imageWidth);
     self.contentSize = CGSizeMake(boundsWidth, imageFrame.size.height);
     
+//    NSLog(@"boundsHeight: %.2f",boundsHeight);
+//    NSLog(@"imageFrame.size.height: %.2f",imageFrame.size.height);
+    
     if (imageFrame.size.height < boundsHeight) {
         
         imageFrame.origin.y = (boundsHeight - imageFrame.size.height)/2.0;
-    }else{
-        
-        imageFrame.origin.y = 0;
     }
+    else{
     
+        imageFrame.origin.y = 0;
+        //fixbug: sometime self.bounds.origin.y = 35
+        self.contentOffset = CGPointMake(0, 0);
+    }
+
     _imageView.frame = imageFrame;
     _doubleTap.enabled = YES;
     
@@ -132,8 +138,12 @@
         [self setupLoadingView];
     }else{
         
+        _loadingView.hidden = NO;
         [self bringSubviewToFront:_loadingView];
     }
+    
+    _imageView.frame =CGRectMake(0, 0, CGRectGetWidth(self.frame), CGRectGetHeight(self.frame));
+    _imageView.center = CGPointMake(CGRectGetWidth(self.frame)/2, CGRectGetHeight(self.frame)/2);
     
     __weak typeof(self) weakSelf = self;
     
@@ -202,5 +212,6 @@
     }
     _imageView.frame = imageViewFrame;
 }
+
 
 @end
