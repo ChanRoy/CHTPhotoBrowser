@@ -37,7 +37,7 @@
                          @"http://img.mp.itc.cn/upload/20160826/e5b3787c69074e86bc43a68772089c89_th.jpg",
                          ];
     
-    CHTPhotoBrowser *photoBrowser = [[CHTPhotoBrowser alloc]initWithFrame:CGRectMake(0, 0, SCREENWIDTH, SCREENHEIGHT - 128) imageUrls:urlStrs placeholderImage:[UIImage imageNamed:@"placePhoto"]];
+    CHTPhotoBrowser *photoBrowser = [[CHTPhotoBrowser alloc]initWithFrame:CGRectMake(0, 0, SCREENWIDTH, SCREENHEIGHT) imageUrls:urlStrs placeholderImage:[UIImage imageNamed:@"placePhoto"]];
     [self.view addSubview:photoBrowser];
     
     
