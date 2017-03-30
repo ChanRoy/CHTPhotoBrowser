@@ -13,7 +13,7 @@
 #define SCREENWIDTH [UIScreen mainScreen].bounds.size.width
 #define SCREENHEIGHT [UIScreen mainScreen].bounds.size.height
 
-#define WebImage 1
+#define WebImage 0
 
 @interface ViewController ()<CHTPhotoBrowserDelegate>
 
@@ -38,6 +38,10 @@
                          ];
     
     CHTPhotoBrowser *photoBrowser = [[CHTPhotoBrowser alloc]initWithFrame:CGRectMake(0, 0, SCREENWIDTH, SCREENHEIGHT) imageUrls:urlStrs placeholderImage:[UIImage imageNamed:@"placePhoto"]];
+    photoBrowser.delegate = self;
+    photoBrowser.showPageControl = YES;
+//    photoBrowser.currentIndex = 2;
+    photoBrowser.infiniteScroll = YES;
     [self.view addSubview:photoBrowser];
     
     
@@ -53,7 +57,10 @@
     
     CHTPhotoBrowser *photoBrowser = [[CHTPhotoBrowser alloc]initWithFrame:CGRectMake(0, 0, SCREENWIDTH, SCREENHEIGHT) images:photos];
     photoBrowser.delegate = self;
+    photoBrowser.delegate = self;
     photoBrowser.showPageControl = YES;
+    photoBrowser.currentIndex = 2;
+    photoBrowser.infiniteScroll = YES;
     [self.view addSubview:photoBrowser];
 
 #endif

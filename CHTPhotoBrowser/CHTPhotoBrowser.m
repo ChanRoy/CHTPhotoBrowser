@@ -23,8 +23,6 @@ typedef enum : NSUInteger {
 
 @property (nonatomic, strong) UIScrollView *scrollView;
 
-@property (nonatomic, strong) UIView *contentView;
-
 @property (nonatomic, strong) UIPageControl *pageControl;
 
 @property (nonatomic, strong) NSArray *imageUrls;
@@ -46,8 +44,10 @@ typedef enum : NSUInteger {
     CGFloat _viewWidth;
     CGFloat _viewHeight;
     BOOL _showPageControl;
+    BOOL _infiniteScroll;
 }
 
+#pragma mark - init method
 - (instancetype)initWithFrame:(CGRect)frame imageUrls:(NSArray <NSString *>*)imageUrls placeholderImage:(UIImage *)placeholderImage{
     
     if (self = [super initWithFrame:frame]) {
@@ -79,23 +79,23 @@ typedef enum : NSUInteger {
     return self;
 }
 
-- (void)layoutSubviews{
-    
-    [super layoutSubviews];
-    _scrollView.contentSize = CGSizeMake(_viewWidth * 3, 0);
-    _scrollView.contentOffset = CGPointMake(_viewWidth, 0);
-}
-
 - (void)initialize{
     
+    self.backgroundColor = [UIColor blackColor];
     _viewWidth = CGRectGetWidth(self.frame);
     _viewHeight = CGRectGetHeight(self.frame);
+    _infiniteScroll = YES;
 }
 
 #pragma mark - getter
 - (BOOL)isShowPageControl{
     
     return _showPageControl;
+}
+
+- (BOOL)isInfiniteScroll{
+    
+    return _infiniteScroll;
 }
 
 #pragma mark - setter
@@ -111,26 +111,37 @@ typedef enum : NSUInteger {
     [self setupScrollView];
 }
 
+- (void)setInfiniteScroll:(BOOL)infiniteScroll{
+    
+    if (_infiniteScroll == infiniteScroll) {
+        
+        return;
+    }
+    _infiniteScroll = infiniteScroll;
+    [self setupScrollView];
+}
+
 #pragma mark - UI
+
 - (void)setupScrollView{
     
-    if (_scrollView) {
+    if (_scrollView) [_scrollView removeFromSuperview];
+    if (_pageControl) [_pageControl removeFromSuperview];
+    
+    if (!_infiniteScroll && _imageCount < 3) {
         
-        [_scrollView removeFromSuperview];
+        [self setupScrollViewWithFewImages];
+        return;
     }
     
     _scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, _viewWidth, _viewHeight)];
+    _scrollView.contentSize = CGSizeMake(_viewWidth * 3, 0);
     _scrollView.showsVerticalScrollIndicator = NO;
     _scrollView.showsHorizontalScrollIndicator = NO;
     _scrollView.pagingEnabled = YES;
     _scrollView.bounces = NO;
     _scrollView.delegate = self;
     [self addSubview:_scrollView];
-    
-    _contentView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, _viewWidth*3, _viewHeight)];
-    _contentView.backgroundColor = [UIColor blackColor];
-    _contentView.userInteractionEnabled = YES;
-    [_scrollView addSubview:_contentView];
     
     _photoViewArr = [NSMutableArray new];
     
@@ -143,20 +154,34 @@ typedef enum : NSUInteger {
         photoView.photoViewDelegate = self;
         
         NSInteger index = 0;
-        if (i == 0) index = _currentIndex==0? _imageCount-1: _currentIndex-1;
-        if (i == 1) index = _currentIndex;
-        if (i == 2) index = _currentIndex+1 == _imageCount? 0: _currentIndex+1;
+        if (!_infiniteScroll && _currentIndex == 0) {
+            
+            if (i == 0) index = 0;
+            if (i == 1) index = 1;
+            if (i == 2) index = 2;
+        }
+        else if (!_infiniteScroll && _currentIndex == _imageCount-1){
+            
+            if (i == 0) index = _imageCount-3;
+            if (i == 1) index = _imageCount-2;
+            if (i == 2) index = _imageCount-1;
+        }
+        else{
+            
+            if (i == 0) index = _currentIndex==0? _imageCount-1: _currentIndex-1;
+            if (i == 1) index = _currentIndex;
+            if (i == 2) index = _currentIndex+1 == _imageCount? 0: _currentIndex+1;
+        }
+        
         
         photoView.tag = index + START_TAG;
 
         
         [self setImageForPhotoView:photoView atIndex:index];
         [_photoViewArr addObject:photoView];
-        [_contentView addSubview:photoView];
+        [_scrollView addSubview:photoView];
         
     }
-    
-    _scrollView.contentOffset = CGPointMake(_viewWidth, 0);
     
     _pageControl = [[UIPageControl alloc]initWithFrame:CGRectMake(0, _viewHeight - 30, _viewWidth, 30)];
     _pageControl.numberOfPages = _imageCount;
@@ -164,13 +189,71 @@ typedef enum : NSUInteger {
     _pageControl.hidesForSinglePage = YES;
     [self addSubview:_pageControl];
     _pageControl.hidden = !_showPageControl;
-
+    
     
     if (_imageCount == 1) {
         _scrollView.scrollEnabled = NO;
     }
+    
+    NSInteger flag = 1;
+    if (!_infiniteScroll) {
+        
+        if (_currentIndex == 0) {
+            
+            flag = 0;
+            _currentIndex = 1;
+        }
+        else if (_currentIndex == _imageCount-1) {
+            
+            flag = 2;
+            _currentIndex = _imageCount-2;
+        }
+        else flag = 1;
+    }
+    
+    
+    _scrollView.contentOffset = CGPointMake(_viewWidth * flag, 0);
+
 }
 
+//count of images is less than 3 and is not infinite
+- (void)setupScrollViewWithFewImages{
+    
+    if (_scrollView) [_scrollView removeFromSuperview];
+    if (_pageControl) [_pageControl removeFromSuperview];
+    
+    _scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, _viewWidth, _viewHeight)];
+    _scrollView.contentSize = CGSizeMake(_viewWidth * _imageCount, 0);
+    _scrollView.showsVerticalScrollIndicator = NO;
+    _scrollView.showsHorizontalScrollIndicator = NO;
+    _scrollView.pagingEnabled = YES;
+    _scrollView.bounces = NO;
+    _scrollView.delegate = self;
+    [self addSubview:_scrollView];
+    
+    _photoViewArr = [NSMutableArray new];
+    
+    if (_imageCount == 0) return;
+    
+    //setup photoViews in the _scrollView
+    for (NSInteger i = 0; i < _imageCount; i ++) {
+        
+        CHTPhotoView *photoView = [[CHTPhotoView alloc]initWithFrame:CGRectMake(_viewWidth*i, 0, _viewWidth, _viewHeight)];
+        photoView.photoViewDelegate = self;
+        [self setImageForPhotoView:photoView atIndex:i];
+        [_scrollView addSubview:photoView];
+    }
+    
+    _pageControl = [[UIPageControl alloc]initWithFrame:CGRectMake(0, _viewHeight - 30, _viewWidth, 30)];
+    _pageControl.numberOfPages = _imageCount;
+    _pageControl.currentPage = _currentIndex;
+    _pageControl.hidesForSinglePage = YES;
+    [self addSubview:_pageControl];
+    _pageControl.hidden = !_showPageControl;
+    _scrollView.contentOffset = CGPointMake(_viewWidth * _currentIndex, 0);
+}
+
+//setup image for photoView
 - (void)setImageForPhotoView:(CHTPhotoView *)photoView atIndex:(NSUInteger)index{
     
     if (_imageType == CHTImageTypeFromNet) {
@@ -200,9 +283,48 @@ typedef enum : NSUInteger {
     }
     //no moving
     else{
+        
+        if (!_infiniteScroll){
+            
+            _pageControl.currentPage = _currentIndex;
+            if (_delegate && [_delegate respondsToSelector:@selector(photoBrowser:didScrollToIndex:)]) {
+                
+                [_delegate photoBrowser:self didScrollToIndex:_currentIndex];
+            }
+        }
         return;
     }
-    
+    if (!_infiniteScroll) {
+        
+        if (_currentIndex == 1 && flag == -1) {
+            
+            if (_pageControl.currentPage == 0) {
+                return;
+            }
+            _pageControl.currentPage = 0;
+            
+            if (_delegate && [_delegate respondsToSelector:@selector(photoBrowser:didScrollToIndex:)]) {
+                
+                [_delegate photoBrowser:self didScrollToIndex:0];
+            }
+            return;
+        }
+        if (_currentIndex == _imageCount-2 && flag == 1) {
+            
+            if (_pageControl.currentPage == _imageCount-1) {
+                
+                return;
+            }
+            _pageControl.currentPage = _imageCount-1;
+            
+            if (_delegate && [_delegate respondsToSelector:@selector(photoBrowser:didScrollToIndex:)]) {
+                
+                [_delegate photoBrowser:self didScrollToIndex:_imageCount-1];
+            }
+            return;
+        }
+    }
+    //infinite
     //change the image in imageViews
     for (CHTPhotoView *photoView in _photoViewArr) {
         
@@ -217,11 +339,9 @@ typedef enum : NSUInteger {
         photoView.tag = index + START_TAG;
         
         [self setImageForPhotoView:photoView atIndex:index];
-        
-        //the imageView in the middel should be always in the middle
-        _scrollView.contentOffset = CGPointMake(_viewWidth, 0);
-        
     }
+    //the imageView in the middle should be always in the middle
+    _scrollView.contentOffset = CGPointMake(_viewWidth, 0);
     
     _pageControl.currentPage = _photoViewArr[1].tag - START_TAG;
     _currentIndex = _photoViewArr[1].tag - START_TAG;
@@ -247,15 +367,15 @@ typedef enum : NSUInteger {
 //when scrollView end decelerating, this method wiil be called. (by user)
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
     
-    [self updateUI];
-}
-
-//when call 'setContentOffset', this method will be called. (by system)
-- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView{
+    if (!_infiniteScroll && _imageCount < 3) {
+        
+        NSInteger index = scrollView.contentOffset.x / _viewWidth;
+        _currentIndex = index;
+        _pageControl.currentPage = index;
+    }else{
     
-    [self updateUI];
+        [self updateUI];
+    }
 }
-
-
 
 @end
