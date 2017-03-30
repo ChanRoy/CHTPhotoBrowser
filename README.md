@@ -31,6 +31,12 @@ A Photo Browser With High Quality
 
 ### property
 
+- set if the browser is infinite loop
+
+```
+@property (nonatomic, assign, getter=isInfiniteScroll) BOOL infiniteScroll;
+```
+
 - set the pageControl hidden or showed
 
 ```
