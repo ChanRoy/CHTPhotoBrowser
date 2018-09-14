@@ -26,6 +26,8 @@
 
 @property (nonatomic, assign) NSInteger currentIndex;
 
+@property (nonatomic, strong, readonly) UIImage *currentImage;
+
 @property (nonatomic, weak) id <CHTPhotoBrowserDelegate> delegate;
 
 - (instancetype)init NS_UNAVAILABLE;

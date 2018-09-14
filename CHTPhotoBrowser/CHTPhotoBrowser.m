@@ -98,6 +98,18 @@ typedef enum : NSUInteger {
     return _infiniteScroll;
 }
 
+- (UIImage *)currentImage {
+    
+    NSInteger index = _scrollView.contentOffset.x / _scrollView.bounds.size.width;
+    
+    if (_photoViewArr.count > index) {
+        
+        CHTPhotoView *currentPhotoView = _photoViewArr[index];
+        return currentPhotoView.image;
+    }
+    return nil;
+}
+
 #pragma mark - setter
 - (void)setShowPageControl:(BOOL)showPageControl{
     
@@ -190,7 +202,6 @@ typedef enum : NSUInteger {
     [self addSubview:_pageControl];
     _pageControl.hidden = !_showPageControl;
     
-    
     if (_imageCount == 1) {
         _scrollView.scrollEnabled = NO;
     }
@@ -211,9 +222,7 @@ typedef enum : NSUInteger {
         else flag = 1;
     }
     
-    
     _scrollView.contentOffset = CGPointMake(_viewWidth * flag, 0);
-
 }
 
 //count of images is less than 3 and is not infinite
@@ -242,6 +251,7 @@ typedef enum : NSUInteger {
         photoView.photoViewDelegate = self;
         [self setImageForPhotoView:photoView atIndex:i];
         [_scrollView addSubview:photoView];
+        [_photoViewArr addObject:photoView];
     }
     
     _pageControl = [[UIPageControl alloc]initWithFrame:CGRectMake(0, _viewHeight - 30, _viewWidth, 30)];
@@ -349,7 +359,6 @@ typedef enum : NSUInteger {
     if (_delegate && [_delegate respondsToSelector:@selector(photoBrowser:didScrollToIndex:)]) {
         
         [_delegate photoBrowser:self didScrollToIndex:_photoViewArr[1].tag-START_TAG];
-        
     }
 }
 
@@ -371,7 +380,13 @@ typedef enum : NSUInteger {
         
         NSInteger index = scrollView.contentOffset.x / _viewWidth;
         _currentIndex = index;
-        _pageControl.currentPage = index;
+        _pageControl.currentPage = _currentIndex;
+        
+        if (_delegate && [_delegate respondsToSelector:@selector(photoBrowser:didScrollToIndex:)]) {
+            
+            [_delegate photoBrowser:self didScrollToIndex:_currentIndex];
+        }
+        
     }else{
     
         [self updateUI];

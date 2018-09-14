@@ -49,7 +49,7 @@
     
     //local image
     NSMutableArray *photos = [NSMutableArray new];
-    for (NSUInteger i = 0; i < 4; i ++) {
+    for (NSUInteger i = 0; i < 2; i ++) {
         
         UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"%ld.jpg",i+1]];
         [photos addObject:image];
@@ -59,7 +59,6 @@
     photoBrowser.delegate = self;
     photoBrowser.delegate = self;
     photoBrowser.showPageControl = YES;
-    photoBrowser.currentIndex = 2;
     photoBrowser.infiniteScroll = YES;
     [self.view addSubview:photoBrowser];
 

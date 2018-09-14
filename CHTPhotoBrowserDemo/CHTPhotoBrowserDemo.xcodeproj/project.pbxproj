@@ -28,7 +28,6 @@
 		AE9743551E80D92F00766D54 /* 3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = AE9743511E80D92F00766D54 /* 3.jpg */; };
 		AE9743561E80D92F00766D54 /* 2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = AE9743521E80D92F00766D54 /* 2.jpg */; };
 		AE9743571E80D92F00766D54 /* 1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = AE9743531E80D92F00766D54 /* 1.jpg */; };
-		AE97435F1E81007000766D54 /* CHTPhotoBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = AE97435A1E81007000766D54 /* CHTPhotoBrowser.m */; };
 		AE9743601E81007000766D54 /* CHTPhotoView.m in Sources */ = {isa = PBXBuildFile; fileRef = AE97435C1E81007000766D54 /* CHTPhotoView.m */; };
 		AE9743611E81007000766D54 /* CHTRingLoadingView.m in Sources */ = {isa = PBXBuildFile; fileRef = AE97435E1E81007000766D54 /* CHTRingLoadingView.m */; };
 		AE99E29B1E7FC28E00EF038C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = AE99E29A1E7FC28E00EF038C /* main.m */; };
@@ -37,6 +36,7 @@
 		AE99E2A41E7FC28E00EF038C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AE99E2A21E7FC28E00EF038C /* Main.storyboard */; };
 		AE99E2A61E7FC28E00EF038C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AE99E2A51E7FC28E00EF038C /* Assets.xcassets */; };
 		AE99E2A91E7FC28E00EF038C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AE99E2A71E7FC28E00EF038C /* LaunchScreen.storyboard */; };
+		AEDD84DF214B899F002A4784 /* CHTPhotoBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = AEDD84DE214B899F002A4784 /* CHTPhotoBrowser.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -76,8 +76,6 @@
 		AE9743511E80D92F00766D54 /* 3.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 3.jpg; sourceTree = "<group>"; };
 		AE9743521E80D92F00766D54 /* 2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 2.jpg; sourceTree = "<group>"; };
 		AE9743531E80D92F00766D54 /* 1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 1.jpg; sourceTree = "<group>"; };
-		AE9743591E81007000766D54 /* CHTPhotoBrowser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHTPhotoBrowser.h; sourceTree = "<group>"; };
-		AE97435A1E81007000766D54 /* CHTPhotoBrowser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CHTPhotoBrowser.m; sourceTree = "<group>"; };
 		AE97435B1E81007000766D54 /* CHTPhotoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHTPhotoView.h; sourceTree = "<group>"; };
 		AE97435C1E81007000766D54 /* CHTPhotoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CHTPhotoView.m; sourceTree = "<group>"; };
 		AE97435D1E81007000766D54 /* CHTRingLoadingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHTRingLoadingView.h; sourceTree = "<group>"; };
@@ -92,6 +90,8 @@
 		AE99E2A51E7FC28E00EF038C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AE99E2A81E7FC28E00EF038C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		AE99E2AA1E7FC28E00EF038C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AEDD84DD214B899F002A4784 /* CHTPhotoBrowser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHTPhotoBrowser.h; sourceTree = "<group>"; };
+		AEDD84DE214B899F002A4784 /* CHTPhotoBrowser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CHTPhotoBrowser.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -174,8 +174,8 @@
 		AE9743581E81007000766D54 /* CHTPhotoBrowser */ = {
 			isa = PBXGroup;
 			children = (
-				AE9743591E81007000766D54 /* CHTPhotoBrowser.h */,
-				AE97435A1E81007000766D54 /* CHTPhotoBrowser.m */,
+				AEDD84DD214B899F002A4784 /* CHTPhotoBrowser.h */,
+				AEDD84DE214B899F002A4784 /* CHTPhotoBrowser.m */,
 				AE97435B1E81007000766D54 /* CHTPhotoView.h */,
 				AE97435C1E81007000766D54 /* CHTPhotoView.m */,
 				AE97435D1E81007000766D54 /* CHTRingLoadingView.h */,
@@ -309,6 +309,7 @@
 				AE99E2A11E7FC28E00EF038C /* ViewController.m in Sources */,
 				AE9743601E81007000766D54 /* CHTPhotoView.m in Sources */,
 				AE9743491E80C73100766D54 /* UIImageView+HighlightedWebCache.m in Sources */,
+				AEDD84DF214B899F002A4784 /* CHTPhotoBrowser.m in Sources */,
 				AE97434A1E80C73100766D54 /* UIImageView+WebCache.m in Sources */,
 				AE9743441E80C73100766D54 /* SDWebImageManager.m in Sources */,
 				AE97433F1E80C73100766D54 /* SDImageCache.m in Sources */,
@@ -320,7 +321,6 @@
 				AE9743421E80C73100766D54 /* SDWebImageDownloader.m in Sources */,
 				AE9743411E80C73100766D54 /* SDWebImageDecoder.m in Sources */,
 				AE97433D1E80C73100766D54 /* README.md in Sources */,
-				AE97435F1E81007000766D54 /* CHTPhotoBrowser.m in Sources */,
 				AE9743401E80C73100766D54 /* SDWebImageCompat.m in Sources */,
 				AE99E29E1E7FC28E00EF038C /* AppDelegate.m in Sources */,
 				AE99E29B1E7FC28E00EF038C /* main.m in Sources */,
